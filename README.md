@@ -43,7 +43,6 @@ Ensure the following tools and packages are installed on your system:
 Follow these exact steps to clone, resolve dependencies, and compile the workspace:
 
 ### 1. Clone the Repository
-Clone the repository into the `src` directory of your ROS 2 workspace:
 
 ```bash
 git clone https://github.com/valentinveselcic/Mobile-Robot-Navigation-System.git.

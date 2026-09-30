@@ -1,0 +1,28 @@
+<launch>
+    <let name="urdf_path"
+    value="$(find-pkg-share robot_description)/urdf/mob_rob_urdf.xacro" />
+    <node pkg="robot_state_publisher" exec="robot_state_publisher">
+    <param name="robot_description" value="$(command 'xacro $(var urdf_path)')" />
+    </node>
+    
+    <let name="gazebo_world_path"
+    value="$(find-pkg-share robot_description)/urdf/worlds/depot.sdf" />
+    <include file="$(find-pkg-share ros_gz_sim)/launch/gz_sim.launch.py">
+    <arg name="gz_args" value="$(var gazebo_world_path) -r" />
+    </include>
+
+    <let name="gazebo_config_path"
+    value="$(find-pkg-share robot_bringup)/config/gz_bridge.yaml" />
+    <node pkg="ros_gz_bridge" exec="parameter_bridge">
+    <param name="config_file" value="$(var gazebo_config_path)" />
+    </node>
+
+    <node pkg="ros_gz_sim" exec="create" args="-topic robot_description -x 0.00 -y 0.00 -z 0.18 -R 0.00 -P
+    0.00 -Y 0.00">
+    <param name="use_sim_time" value="True" />
+    </node>
+
+    <node pkg="robot_navigator" exec="navigate_action_server" output="screen"/>
+
+
+</launch>

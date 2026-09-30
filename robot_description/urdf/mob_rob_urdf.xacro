@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name = "mob_rob">
+    <xacro:include filename="mob_rob_model_urdf.xacro"/>
+    <xacro:include filename="mob_rob_gz_urdf.xacro"/>
+    <xacro:mob_rob/>
+</robot>

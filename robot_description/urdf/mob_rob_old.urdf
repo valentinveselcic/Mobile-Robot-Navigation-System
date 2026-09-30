@@ -1,0 +1,260 @@
+<?xml version="1.0"?>
+<robot name="mob_rob_old">
+    <link name="base_link">
+        <visual>
+            <geometry>
+                <box size="0.4 0.3 0.3"/>
+            </geometry>
+            <material name="red">
+                <color rgba="1.0 0 0 1"/>
+            </material>
+        </visual>
+        <collision>
+            <geometry>
+                <box size="0.4 0.3 0.3"/>
+            </geometry>
+        </collision>
+        <inertial>
+            <mass value="1.0"/>
+            <inertia ixx="0.015" iyy="0.0208" izz="0.0208" ixy="0" ixz="0" iyz="0"/>
+        </inertial>
+    </link>
+    <gazebo>
+    <plugin name="joint_state_publisher" filename="libgazebo_ros_joint_state_publisher.so">
+        <robotNamespace>/</robotNamespace>
+    </plugin>
+</gazebo>
+
+    <link name="r_left_wheel">
+        <visual>
+            <geometry>
+                <cylinder length="0.05" radius="0.1"/>
+            </geometry>
+            <material name="black">
+                <color rgba="0 0 0 1"/>
+            </material>
+        </visual>
+        <collision>
+            <geometry>
+                <cylinder length="0.05" radius="0.1"/>
+            </geometry>
+        </collision>
+        <inertial>
+            <mass value="0.1"/>
+            <inertia ixx="0.00027" iyy="0.00027" izz="0.0005" ixy="0" ixz="0" iyz="0"/>
+        </inertial>
+    </link>
+
+    <joint name="r_left_wheel_joint" type="continuous">
+        <axis xyz="0 0 1"/>
+        <parent link="base_link"/>
+        <child link="r_left_wheel"/>
+        <origin rpy="-1.5708 0 0" xyz="-0.15 0.175 -0.085"/>
+    </joint>
+
+    <link name="r_right_wheel">
+        <visual>
+            <geometry>
+                <cylinder length="0.05" radius="0.1"/>
+            </geometry>
+            <material name="black">
+                <color rgba="0 0 0 1"/>
+            </material>
+        </visual>
+        <collision>
+            <geometry>
+                <cylinder length="0.05" radius="0.1"/>
+            </geometry>
+        </collision>
+        <inertial>
+            <mass value="0.1"/>
+            <inertia ixx="0.00027" iyy="0.00027" izz="0.0005" ixy="0" ixz="0" iyz="0"/>
+        </inertial>
+    </link>
+
+    <joint name="r_right_wheel_joint" type="continuous">
+        <axis xyz="0 0 1"/>
+        <parent link="base_link"/>
+        <child link="r_right_wheel"/>
+        <origin rpy="-1.5708 0 0" xyz="-0.15 -0.175 -0.085"/>
+    </joint>
+
+    <link name="f_left_wheel">
+        <visual>
+            <geometry>
+                <cylinder length="0.05" radius="0.1"/>
+            </geometry>
+            <material name="black">
+                <color rgba="0 0 0 1"/>
+            </material>
+        </visual>
+        <collision>
+            <geometry>
+                <cylinder length="0.05" radius="0.1"/>
+            </geometry>
+        </collision>
+        <inertial>
+            <mass value="0.1"/>
+            <inertia ixx="0.00027" iyy="0.00027" izz="0.0005" ixy="0" ixz="0" iyz="0"/>
+        </inertial>
+    </link>
+
+    <joint name="f_left_wheel_joint" type="continuous">
+        <axis xyz="0 0 1"/>
+        <parent link="base_link"/>
+        <child link="f_left_wheel"/>
+        <origin rpy="-1.5708 0 0" xyz="0.15 0.175 -0.085"/>
+    </joint>
+
+    <link name="f_right_wheel">
+        <visual>
+            <geometry>
+                <cylinder length="0.05" radius="0.1"/>
+            </geometry>
+            <material name="black">
+                <color rgba="0 0 0 1"/>
+            </material>
+        </visual>
+        <collision>
+            <geometry>
+                <cylinder length="0.05" radius="0.1"/>
+            </geometry>
+        </collision>
+        <inertial>
+            <mass value="0.1"/>
+            <inertia ixx="0.00027" iyy="0.00027" izz="0.0005" ixy="0" ixz="0" iyz="0"/>
+        </inertial>
+    </link>
+
+    <joint name="f_right_wheel_joint" type="continuous">
+        <axis xyz="0 0 1"/>
+        <parent link="base_link"/>
+        <child link="f_right_wheel"/>
+        <origin rpy="-1.5708 0 0" xyz="0.15 -0.175 -0.085"/>
+    </joint>
+    <link name="camera_link">
+        <visual>
+            <geometry>
+                <box size="0.05 0.05 0.05"/>
+            </geometry>
+            <material name="black"/>
+        </visual>
+    </link>
+    <joint name="camera_joint" type="fixed">
+        <axis xyz="0 1 0"/>
+        <parent link="base_link"/>
+        <child link="camera_link"/>
+        <origin xyz="0.2 0 0.15" rpy="0 0 0"/>
+    </joint>
+
+    <gazebo reference="camera_link">
+        <sensor type="camera" name="camera">
+            <update_rate>30.0</update_rate>
+            <camera name="head">
+                <horizontal_fov>1.3962634</horizontal_fov>
+                <image>
+                    <width>400</width>
+                    <height>400</height>
+                    <format>R8G8B8</format>
+                </image>
+                <clip>
+                    <near>0.02</near>
+                    <far>300</far>
+                </clip>
+                <noise>
+                    <type>gaussian</type>
+                    <mean>0.0</mean>
+                    <stddev>0.007</stddev>
+                </noise>
+            </camera>
+            <plugin name="camera_controller" filename="libgazebo_ros_camera.so">
+                <alwaysOn>true</alwaysOn>
+                <updateRate>0.0</updateRate>
+                <cameraName>/camera</cameraName>
+                <imageTopicName>image_raw</imageTopicName>
+                <cameraInfoTopicName>camera_info</cameraInfoTopicName>
+                <frameName>camera_optical_frame</frameName>
+                <hackBaseline>0.07</hackBaseline>
+                <distortionK1>0.0</distortionK1>
+                <distortionK2>0.0</distortionK2>
+                <distortionK3>0.0</distortionK3>
+                <distortionT1>0.0</distortionT1>
+                <distortionT2>0.0</distortionT2>
+            </plugin>
+        </sensor>
+    </gazebo>
+<link name="laser_link">
+    <visual>
+        <geometry>
+            <cylinder length="0.05" radius="0.1"/>
+        </geometry>
+        <material name="silver"/>
+    </visual>
+    <collision>
+        <geometry>
+            <cylinder length="0.05" radius="0.1"/>
+        </geometry>
+    </collision>
+    <inertial>
+        <mass value="0.1"/>
+        <inertia ixx="0.00027" iyy="0.00027" izz="0.0005" ixy="0" ixz="0" iyz="0"/>
+    </inertial>
+</link>
+
+<joint name="laser_joint" type="fixed">
+    <axis xyz="0 0 1"/>
+    <parent link="base_link"/>
+    <child link="laser_link"/>
+    <origin xyz="0 0 0.175" rpy="0 0 0"/>
+</joint>
+
+<gazebo reference="laser_link">
+    <sensor type="ray" name="head_hokuyo_sensor">
+        <pose>0 0 0 0 0 0</pose>
+        <visualize>false</visualize>
+        <update_rate>40</update_rate>
+        <ray>
+            <scan>
+                <horizontal>
+                    <samples>720</samples>
+                    <resolution>1</resolution>
+                    <min_angle>-3.14</min_angle>
+                    <max_angle>3.14</max_angle>
+                </horizontal>
+            </scan>
+            <range>
+                <min>0.40</min>
+                <max>30.0</max>
+                <resolution>0.01</resolution>
+            </range>
+            <noise>
+                <type>gaussian</type>
+                <mean>0.0</mean>
+                <stddev>0.01</stddev>
+            </noise>
+        </ray>
+        <plugin name="gazebo_ros_head_hokuyo_controller" filename="libgazebo_ros_laser.so">
+            <topicName>/scan</topicName>
+            <frameName>laser_link</frameName>
+        </plugin>
+    </sensor>
+</gazebo>
+    <gazebo>
+        <plugin name="skid_steer_drive_controller" filename="libgazebo_ros_skid_steer_drive.so">
+            <updateRate>100.0</updateRate>
+            <robotNamespace>/</robotNamespace>
+            <leftFrontJoint>f_left_wheel_joint</leftFrontJoint>
+            <rightFrontJoint>f_right_wheel_joint</rightFrontJoint>
+            <leftRearJoint>r_left_wheel_joint</leftRearJoint>
+            <rightRearJoint>r_right_wheel_joint</rightRearJoint>
+            <wheelSeparation>0.3</wheelSeparation>
+            <wheelDiameter>0.2</wheelDiameter>
+            <robotBaseFrame>base_link</robotBaseFrame>
+            <torque>20</torque>
+            <commandTopic>cmd_vel</commandTopic>
+            <odometryTopic>odom</odometryTopic>
+            <odometryFrame>odom</odometryFrame>
+            <broadcastTF>true</broadcastTF>
+        </plugin>
+    </gazebo>
+</robot>
